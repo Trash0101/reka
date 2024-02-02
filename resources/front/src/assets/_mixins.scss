@@ -1,0 +1,14 @@
+@import '/resources/front/src/assets/colors.scss';
+@mixin hover {
+    transition: all .1s ease-out;
+    &:hover{
+        transform: translateY(-.1rem) scale(1.025);
+        text-shadow: .1rem .2rem .2rem rgba(0, 0, 0, 0.1);
+    }
+    &:active {
+        color: $font_main;
+    }
+    &:visited{
+        color: $font_main;
+    }
+}
