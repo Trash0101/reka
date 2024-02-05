@@ -94,7 +94,7 @@ class ProductController extends Controller
      */
     public function index(ProductFilter $filters): ProductResourceCollection
     {
-        $products = Product::filter($filters)->paginate(10);
+        $products = Product::filter($filters)->paginate(9);
 
         return new ProductResourceCollection($products, $filters);
     }

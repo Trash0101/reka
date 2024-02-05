@@ -1,13 +1,32 @@
 import {defineStore} from "pinia";
 import {computed, ref} from "vue";
-import type {CartItem, CartStorageItem, Item} from "../types/types";
+import type {APIres, CartItem, CartStorageItem, Item} from "../types/types";
+import {useCatalogueStore} from "./catalogueStore";
+import axios from "axios";
 
 export const useCartStore = defineStore('cart', ()=> {
+        const catalogueStore = useCatalogueStore()
         const cartItems = ref<CartItem[]>([])
         const totalPrice = computed(()=>{
             let acc = 0;
             cartItems.value.forEach((el)=>{
                 acc += el.price * el.quantity
+            })
+            return acc
+        })
+        const totalQuantity = computed(()=> {
+            let acc = 0;
+            cartItems.value.forEach((el) => {
+                acc += el.quantity
+            })
+            return acc
+        })
+        const totalDiscount = computed(()=> {
+            let acc = 0;
+            cartItems.value.forEach((el) => {
+                if(el.price_old){
+                    acc += el.price_old*el.quantity
+                }
             })
             return acc
         })
@@ -21,26 +40,107 @@ export const useCartStore = defineStore('cart', ()=> {
             })
             localStorage.setItem('cart', JSON.stringify(cartStorage))
         }
-        const addToCart = (item:Item) => {
+        const cartLocalStorageRestore = async () => {
+                const storageCart = localStorage.getItem('cart')
+                if(storageCart) {
+                    const parsed = JSON.parse(storageCart)
+                    for (const el of parsed){
+                        try{
+                            const page = Math.floor(el.id/9)
+                            const res = await axios.get<APIres>('/api/products/', {
+                                params: {
+                                    page: page,
+                                }
+                            })
+                            const returnedItem = res.data.data.find((innerEl)=> {
+                                return innerEl.id === el.id
+                            })
+                            if(!returnedItem){
+                                throw new Error('Cart item not found')
+                            }else {
+                                addToCart(returnedItem, el.quantity)
+                            }
+                        } catch (err){
+                            return false
+                        }
+                    }
+                }
+
+        }
+        const addToCart = (item:Item, quantity:number = 1) => {
             const index = cartItems.value.findIndex((el)=> {
                 return item.id === el.id
             })
             if(index === -1) {
                 const cartPush:CartItem = {
+                    name: item.title,
+                    img: 'placeholder',
                     id: item.id,
                     price: item.price,
-                    priceOld: item.priceOld,
-                    quantity: 1,
+                    price_old: item.price_old,
+                    quantity,
                 }
-                if(item.priceOld) {
-                    cartPush.salePercentage = ((item.priceOld - item.price) / item.priceOld) * 100
+                if(item.price_old) {
+                    cartPush.salePercentage = ((item.price_old - item.price) / item.price_old) * 100
                 }
                 cartItems.value.push(cartPush)
             } else {
                 cartItems.value[index].quantity++
             }
+            cartLocalStorage()
+        }
+        const removeFromCart = (id:number) => {
+            const index = cartItems.value.findIndex((el)=> {
+                return id === el.id
+            })
+            if(index === -1) {
+                return false
+            } else {
+                if(cartItems.value[index].quantity === 1) {
+                    cartItems.value.splice(index, 1)
+                } else {
+                    cartItems.value[index].quantity--
+                }
+            }
+            cartLocalStorage()
+        }
+        const removeItemCompletely = (id:number) => {
+            const index = cartItems.value.findIndex((el)=> {
+                return id === el.id
+            })
+            if(index === -1) {
+                return false
+            } else {
+                cartItems.value.splice(index, 1)
+            }
+            cartLocalStorage()
+        }
+        const checkExistenceById = (id:number)=> {
+
+            const index = cartItems.value.findIndex((el) => {
+                return el.id === id
+            })
+            if(index === -1) {
+                return false
+            } else {
+                return index
+            }
         }
         const clearCart = () => {
-
+            cartItems.value = []
+            localStorage.removeItem('cart')
+        }
+        return {
+            cartItems,
+            totalPrice,
+            totalQuantity,
+            totalDiscount,
+            cartLocalStorage,
+            cartLocalStorageRestore,
+            addToCart,
+            removeFromCart,
+            removeItemCompletely,
+            clearCart,
+            checkExistenceById,
         }
 })

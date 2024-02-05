@@ -1,6 +1,9 @@
 import {createRouter, createWebHistory} from "vue-router";
 import AuthPage from "../views/AuthPage.vue";
 import CataloguePage from "../views/CataloguePage.vue";
+import {useCatalogueStore} from "../store/catalogueStore";
+import CartPage from "../views/CartPage.vue";
+
 
 
 const router = createRouter({
@@ -12,13 +15,16 @@ const router = createRouter({
             component: AuthPage
         },
         {
-            path: '/catalogue',
+            path: '/catalogue/:params*',
             name: 'catalogue',
             component: CataloguePage
         },
+        {
+            path: '/cart',
+            name: 'cart',
+            component: CartPage
+        },
     ]
 })
-// router.beforeEach(async (to, from) => {
-//     if(to.name !== 'auth') return {name: 'auth'}
-// })
+
 export default router

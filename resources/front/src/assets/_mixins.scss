@@ -6,6 +6,7 @@
         text-shadow: .1rem .2rem .2rem rgba(0, 0, 0, 0.1);
     }
     &:active {
+        transform: translateY(0) scale(1);
         color: $font_main;
     }
     &:visited{
