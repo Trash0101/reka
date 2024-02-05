@@ -4,9 +4,14 @@ import {PhMinusSquare, PhPlusSquare} from "@phosphor-icons/vue";
 import type {Item} from "@/src/types/types";
 import {computed, defineProps} from 'vue'
 import {useCartStore} from "@/src/store/cartStore";
+import CataloguePagination from "@/src/components/Catalogue/CataloguePagination.vue";
+import {useCatalogueStore} from "@/src/store/catalogueStore";
 const props = defineProps<{
   item:Item
+  arrKey: number
 }>()
+
+const catalogueStore = useCatalogueStore()
 const cartStore = useCartStore()
 const cartExistence = computed(()=> {
   const check = ((cartStore.checkExistenceById(props.item.id)))
@@ -23,6 +28,11 @@ const currentQuantity = computed(()=> {
     return el.id === props.item.id
   })
   return cartItem.quantity
+})
+const showPagination = computed(()=> {
+  const numOfRows = Math.floor(catalogueStore.catalogueItems.length/3)
+  console.log(numOfRows, props.arrKey, 'HEY THIS IS PAGINATION')
+  return 2 * numOfRows === props.arrKey;
 })
 </script>
 
@@ -43,11 +53,13 @@ const currentQuantity = computed(()=> {
         <ph-plus-square @click="addToCart" weight="thin" class="active-button__plus"></ph-plus-square>
       </div>
     </div>
+    <catalogue-pagination v-if="showPagination" class="card__pagination"></catalogue-pagination>
   </div>
 </template>
 
 <style scoped lang="scss">
 .card {
+  position: relative;
   width: 100%;
   height: 30rem;
   display: flex;
@@ -89,6 +101,12 @@ const currentQuantity = computed(()=> {
     background-color: rgb($ui_active, .85);
     @include hover();
   }
+  &__pagination{
+    position: absolute;
+    bottom: 0;
+    left: 0.875rem;
+    transform: translateY(125%);
+  }
 }
 .active-button {
   display: flex;
@@ -96,6 +114,8 @@ const currentQuantity = computed(()=> {
   justify-content: space-between;
   font-size: 1.5rem;
   height: 50%;
+  background-color: rgb($ui_active, .4);
+  border-radius: 0.625rem;
   &__plus {
     color: white;
     font-size: 3rem;

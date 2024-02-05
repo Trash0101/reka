@@ -10,18 +10,20 @@ const route = useRoute()
 const router = useRouter()
 const catalogueStore = useCatalogueStore()
 const changeCategory = (key:number) => {
-  let {category, ...destruct} = route.query
+  let {category,page, ...destruct} = route.query
   category = key+1
   catalogueStore.saveVisibilitySettings()
   if(key === -1){
     router.replace({
       query: {
+        page: 1,
         ...destruct
       }
     })
   } else {
     router.replace({
       query: {
+        page: 1,
         category,
         ...destruct
       }

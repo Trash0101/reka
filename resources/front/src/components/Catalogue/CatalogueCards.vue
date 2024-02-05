@@ -7,12 +7,13 @@ const catalogueStore = useCatalogueStore()
 
 <template>
   <section class="cards">
-    <catalogue-card v-for="item in catalogueStore.catalogueItems" :item="item"></catalogue-card>
+    <catalogue-card v-for="(item, key) in catalogueStore.catalogueItems" :item="item" :arr-key="key"></catalogue-card>
   </section>
 </template>
 
 <style scoped lang="scss">
 .cards {
+  position: relative;
   display: grid;
   grid-template-rows: repeat(3, 1fr);
   grid-template-columns: repeat(3, 1fr);

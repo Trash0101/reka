@@ -32,11 +32,12 @@ const selectedMaterials = computed(()=> {
   return materials
 })
 const switchMaterial = () => {
-  let {"materials[]": materials, ...destruct} = route.query
+  let {"materials[]": materials, page, ...destruct} = route.query
   catalogueStore.saveVisibilitySettings()
   console.log(selectedMaterials.value)
   router.replace({
     query: {
+      page: 1,
       "materials[]": selectedMaterials.value,
       ...destruct
     }
@@ -60,6 +61,7 @@ onMounted(()=> {
       } else {
       mat.forEach((el, index)=> {
         if(el === `${props.material.id}`) {
+          console.log('IT WORKED BLYAT')
           isSelected.value = true
         }
         if(props.material.materials) {
@@ -78,18 +80,47 @@ onMounted(()=> {
 
 <template>
 <div class="wrapper">
-  <div  v-if="!isSimpleMaterial" class="entry-single">
-    <input @change="switchMaterial" v-model="isSelected" type="checkbox"> {{props.material.title}}
-  </div>
-  <div @click="switchMaterial" v-else class="entry-complex">
-    <input @change="switchMaterial" v-model="isSelected" type="checkbox"> {{props.material.title}}
-    <div  v-for="(material, key) in props.material.materials"  class="entry-complex__sub" >
-      <input @change="switchMaterial" v-model="isSelectedSub[key]" type="checkbox"> {{material.title}}
-    </div>
+  <label :for="`sinMat${props.material.id}`"  v-if="!isSimpleMaterial" class="entry-single">
+    <input :id="`sinMat${props.material.id}`" @change="switchMaterial" v-model="isSelected" type="checkbox"> {{props.material.title}}
+  </label>
+  <div v-else class="entry-complex">
+    <label :for="`compMat${props.material.id}`" class="entry-complex__top">
+      <input class="entry-complex__checkbox" :id="`compMat${props.material.id}`" @change="switchMaterial" v-model="isSelected" type="checkbox"> {{props.material.title}}
+    </label>
+    <transition name="dropdown">
+      <div class="entry-complex__wrapper">
+        <label :for="material.id"  v-for="(material, key) in props.material.materials" :key="material.id"  class="entry-complex__sub" >
+          <input class="entry-complex__checkbox" :id="material.id" @change="switchMaterial" v-model="isSelectedSub[key]" type="checkbox"> {{material.title}}
+        </label>
+      </div>
+    </transition>
   </div>
 </div>
 </template>
 
 <style scoped lang="scss">
 
+
+.dropdown-enter-from {
+  transform: translateY(-50%);
+  opacity: 0;
+}
+.dropdown-enter-active {
+  transition: all .3s ease-out;
+}
+.dropdown-enter-to {
+  transform: translateY(0);
+  opacity: 1;
+}
+.dropdown-leave-to {
+  transform: translateY(-50%);
+  opacity: 0;
+}
+.dropdown-leave-active {
+  transition: all .3s ease-out;
+}
+.dropdown-leave-from {
+  transform: translateY(0);
+  opacity: 1;
+}
 </style>

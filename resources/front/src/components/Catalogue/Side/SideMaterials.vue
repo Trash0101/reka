@@ -8,10 +8,12 @@ const catalogueStore = useCatalogueStore()
 
 <template>
 <div class="side-materials">
-  <side-materials-entry v-for="material in catalogueStore.materials" :material="material" class="side-materials__entry"></side-materials-entry>
+  <side-materials-entry v-for="material in catalogueStore.materials" :key="material.id" :material="material" class="side-materials__entry"></side-materials-entry>
 </div>
 </template>
 
 <style scoped lang="scss">
-
+.side-materials{
+  margin: 1.25rem 0;
+}
 </style>

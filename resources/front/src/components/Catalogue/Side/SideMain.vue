@@ -22,18 +22,20 @@ onBeforeMount(()=> {
   catalogueStore.retrieveValues()
 })
 const changeCategory = (key:number) => {
-  let {category, ...destruct} = route.query
+  let {category,page, ...destruct} = route.query
   category = key+1
   catalogueStore.saveVisibilitySettings()
   if(key === -1){
     router.replace({
       query: {
+        page: 1,
         ...destruct
       }
     })
   } else {
     router.replace({
       query: {
+        page: 1,
         category,
         ...destruct
       }
@@ -43,19 +45,19 @@ const changeCategory = (key:number) => {
 </script>
 
 <template>
-  <section class="container">
+  <section class="side-container">
     <div class="dropdown" @click="catalogueStore.switchVisibility('type')"> Тип изделия
       <ph-caret-up v-if="!showTypes" weight="bold" class="dropdown__caret"></ph-caret-up>
       <ph-caret-down v-if="showTypes" weight="bold" class="dropdown__caret"></ph-caret-down>
-      <transition name="dropdown">
-        <div class="dropdown__wrap" v-if="showTypes">
-          <div class="dropdown__entry"
-               :class="{'dropdown__entry--selected': !route.query.category}"
-               @click="changeCategory(-1)">Все категории</div>
-          <side-categories v-for="(value, key) in catalogueStore.categories" :keyValue="key" :valueVal="value"></side-categories>
-        </div>
-      </transition>
     </div>
+    <transition name="dropdown">
+      <div class="dropdown__wrap" v-if="showTypes">
+        <div class="dropdown__entry"
+             :class="{'dropdown__entry--selected': !route.query.category}"
+             @click="changeCategory(-1)">Все категории</div>
+        <side-categories v-for="(value, key) in catalogueStore.categories" :keyValue="key" :valueVal="value"></side-categories>
+      </div>
+    </transition>
     <div class="dropdown" @click="catalogueStore.switchVisibility('price')"> Цена
       <ph-caret-up v-if="!showPrice" weight="bold" class="dropdown__caret"></ph-caret-up>
       <ph-caret-down v-if="showPrice" weight="bold" class="dropdown__caret"></ph-caret-down>
@@ -71,13 +73,23 @@ const changeCategory = (key:number) => {
       <side-materials v-if="showMaterial"></side-materials>
     </transition>
     <side-tags></side-tags>
+    <div class="side-container__reset">
+      Очистить фильтр
+    </div>
   </section>
 </template>
 
 <style scoped lang="scss">
-.container {
+.side-container {
   display: flex;
   flex-direction: column;
+  &__reset {
+    font-size: 0.875rem;
+    width: 60%;
+    text-align: center;
+    color: rgb($ui_active, .6);
+    text-decoration: underline;
+  }
 }
 .dropdown{
   color: $ui_active;

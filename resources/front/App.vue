@@ -25,7 +25,12 @@ watch(route, ()=> {
 <template>
     <div class="flex">
         <header-main class="flex__header" :categories="catalogueStore.categories"></header-main>
+      <Suspense>
         <router-view :key="route.fullPath" class="flex__main"></router-view>
+        <template class="flex__loading" #fallback>
+          Loading...
+        </template>
+      </Suspense>
     </div>
 </template>
 <style lang="scss">
@@ -65,5 +70,11 @@ watch(route, ()=> {
 a{
     text-decoration: none;
     color: $font_main;
+}
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+  outline: none;
 }
 </style>

@@ -12,12 +12,13 @@ const route = useRoute()
 const router = useRouter()
 let init = true
 const updatePrice = (pricesArr:number[]) => {
-  let {"prices[]": prices, ...destruct} = route.query
+  let {"prices[]": prices,page, ...destruct} = route.query
   console.log('updating price')
   catalogueStore.saveVisibilitySettings()
     router.replace({
       query: {
         "prices[]": pricesArr,
+        page: 1,
         ...destruct
       }
     })
@@ -42,7 +43,7 @@ onMounted(() => {
     <label for="input2" class="input-field__text">от</label>
     <input @focusout="updatePrice(catalogueStore.priceRange)" @submit.prevent="updatePrice" name="input2" :max="catalogueStore.priceRangeStatic[1]" v-model="catalogueStore.priceRange[1]" type="number">
   </div>
-  <v-range-slider @end="updatePrice" v-model="slider" step="1" :min="catalogueStore.priceRangeStatic[0]" :max="catalogueStore.priceRangeStatic[1]" strict></v-range-slider>
+  <v-range-slider density="compact" @end="updatePrice" v-model="slider" step="1" :min="catalogueStore.priceRangeStatic[0]" :max="catalogueStore.priceRangeStatic[1]" strict></v-range-slider>
 </div>
 </template>
 

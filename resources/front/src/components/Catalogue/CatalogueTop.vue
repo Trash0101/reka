@@ -17,11 +17,11 @@ console.log(totalItems.value)
   <section class="head-catalogue">
     <div class="head-catalogue__text">Все изделия <span class="head-catalogue__text--small">{{converted}}</span></div>
     <div class="head-catalogue__filter">
-      <div v-if="showFilters" class="head-catalogue__wrapper">
+      <div @click="catalogueStore.switchFilterVisibility" v-if="showFilters" class="head-catalogue__wrapper">
         <ph-eye class="head-catalogue__eye" ></ph-eye>
         <span class="head-catalogue__text--filter">Спрятать фильтры</span>
       </div>
-      <div v-else class="head-catalogue__wrapper">
+      <div @click="catalogueStore.switchFilterVisibility" v-else class="head-catalogue__wrapper">
         <ph-eye-closed class="head-catalogue__eye"></ph-eye-closed>
         <span class="head-catalogue__text--filter">Показать фильтры</span>
       </div>

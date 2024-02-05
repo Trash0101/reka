@@ -5,7 +5,6 @@ import axios from "axios";
 
 export const useCatalogueStore = defineStore('catalogue', ()=>{
     const catalogueItems = ref<Item[]>([])
-
     const pages = ref(0)
     const itemsPerPage = ref(9)
 
