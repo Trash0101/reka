@@ -5,7 +5,7 @@ import { useCatalogueStore } from "@/src/store/catalogueStore";
 import { watch } from "vue";
 import CatalogueTop from "@/src/components/Catalogue/CatalogueTop.vue";
 import CatalogueCards from "@/src/components/Catalogue/CatalogueCards.vue";
-import { useCartStore } from "@/src/store/cartStore";
+
 import SideMain from "@/src/components/Catalogue/Side/SideMain.vue";
 import { storeToRefs } from "pinia";
 
