@@ -1,52 +1,50 @@
 <script setup lang="ts">
-import axios from "axios";
+
 import HeaderMain from "@/src/components/HeaderMain.vue";
-import {onMounted, ref, watch} from "vue";
-import type {APIres} from "@/src/types/types";
-import {useRoute} from "vue-router";
-import {useCartStore} from "@/src/store/cartStore";
-import {useCatalogueStore} from "@/src/store/catalogueStore";
+import { ref, watch } from "vue";
+import type { APIres } from "@/src/types/types";
+import { useRoute } from "vue-router";
+import { useCartStore } from "@/src/store/cartStore";
+import { useCatalogueStore } from "@/src/store/catalogueStore";
 
+const catalogue = ref<APIres>();
+const route = useRoute();
+const catalogueStore = useCatalogueStore();
 
-const catalogue = ref<APIres>()
-const route = useRoute()
-const categoriesLoaded = ref(false)
-const catalogueStore = useCatalogueStore()
+const cartStore = useCartStore();
+cartStore.cartLocalStorageRestore();
 
-
-const cartStore = useCartStore()
-cartStore.cartLocalStorageRestore()
-
-watch(route, ()=> {
-  catalogueStore.initialSetup(route.query)
-})
+watch(route, () => {
+    catalogueStore.initialSetup(route.query);
+});
 </script>
 
 <template>
     <div class="flex">
-        <header-main class="flex__header" :categories="catalogueStore.categories"></header-main>
-      <Suspense>
-        <router-view :key="route.fullPath" class="flex__main"></router-view>
-        <template class="flex__loading" #fallback>
-          Loading...
-        </template>
-      </Suspense>
+        <header-main
+            class="flex__header"
+            :categories="catalogueStore.categories"
+        ></header-main>
+        <Suspense>
+            <router-view :key="route.fullPath" class="flex__main"></router-view>
+            <template class="flex__loading" #fallback> Loading... </template>
+        </Suspense>
     </div>
 </template>
 <style lang="scss">
 .dev {
-  padding: 1rem 2rem;
-  background-color: magenta;
-  position: absolute;
-  top: 0;
-  right: 0;
+    padding: 1rem 2rem;
+    background-color: magenta;
+    position: absolute;
+    top: 0;
+    right: 0;
 }
-*{
+* {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
-.html{
+.html {
     font-family: Inter, sans-serif;
     font-size: 62.5% !important;
     color: $font_main;
@@ -67,7 +65,7 @@ watch(route, ()=> {
         align-self: auto;
     }
 }
-a{
+a {
     text-decoration: none;
     color: $font_main;
 }
@@ -75,6 +73,10 @@ input:focus,
 select:focus,
 textarea:focus,
 button:focus {
-  outline: none;
+    outline: none;
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    display: none;
 }
 </style>

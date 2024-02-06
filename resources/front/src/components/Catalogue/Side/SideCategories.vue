@@ -1,45 +1,48 @@
 <script setup lang="ts">
-import {useRoute, useRouter} from "vue-router";
-import {useCatalogueStore} from "@/src/store/catalogueStore";
+import { useRoute, useRouter } from "vue-router";
+import { useCatalogueStore } from "@/src/store/catalogueStore";
 
 const props = defineProps<{
-  keyValue:number,
-  valueVal:string
-}>()
-const route = useRoute()
-const router = useRouter()
-const catalogueStore = useCatalogueStore()
-const changeCategory = (key:number) => {
-  let {category,page, ...destruct} = route.query
-  category = key+1
-  catalogueStore.saveVisibilitySettings()
-  if(key === -1){
-    router.replace({
-      query: {
-        page: 1,
-        ...destruct
-      }
-    })
-  } else {
-    router.replace({
-      query: {
-        page: 1,
-        category,
-        ...destruct
-      }
-    })
-  }
-}
+    keyValue: number;
+    valueVal: string;
+}>();
+const route = useRoute();
+const router = useRouter();
+const catalogueStore = useCatalogueStore();
+const changeCategory = (key: number) => {
+    let { category, page, ...destruct } = route.query;
+    category = key + 1;
+    catalogueStore.saveVisibilitySettings();
+    if (key === -1) {
+        router.replace({
+            query: {
+                page: 1,
+                ...destruct,
+            },
+        });
+    } else {
+        router.replace({
+            query: {
+                page: 1,
+                category,
+                ...destruct,
+            },
+        });
+    }
+};
 </script>
 
 <template>
-  <div class="dropdown__entry"
-       :class="{'dropdown__entry--selected': route.query.category === `${props.keyValue+1}`}"
-       @click="changeCategory(props.keyValue)"
-  >{{valueVal}}
-  </div>
+    <div
+        class="dropdown__entry"
+        :class="{
+            'dropdown__entry--selected':
+                route.query.category === `${props.keyValue + 1}`,
+        }"
+        @click="changeCategory(props.keyValue)"
+    >
+        {{ valueVal }}
+    </div>
 </template>
 
-<style scoped lang="scss">
-
-</style>
+<style scoped lang="scss"></style>
