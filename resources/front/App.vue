@@ -57,13 +57,37 @@ watch(route, () => {
     width: 100vw;
     justify-items: flex-start;
     align-items: center;
+    overflow-x: auto;
     &__header {
         width: 80%;
+        min-width: 1000px;
     }
     &__main {
         width: 80%;
         align-self: auto;
+        min-width: 1000px;
     }
+}
+@media(max-width: 1060px) {
+  .flex {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    flex-shrink: 0;
+    width: 100vw;
+    justify-items: flex-start;
+    align-items: flex-start;
+    overflow-x: auto;
+    &__header {
+      width: 80%;
+      min-width: 1000px;
+    }
+    &__main {
+      width: 80%;
+      align-self: auto;
+      min-width: 1000px;
+    }
+  }
 }
 a {
     text-decoration: none;
