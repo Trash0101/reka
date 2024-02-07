@@ -35,4 +35,36 @@ router.beforeEach((to, from)=> {
 router.beforeEach((to, from)=> {
     return !(cookies?.isKey('auth') && to.name === 'auth');
 })
+router.beforeEach((to, from)=> {
+    if(to.name === 'catalogue') {
+        const queryCheck = (function isEmpty() {
+            for (const prop in to.query) {
+                if (Object.hasOwn(to.query, prop)) {
+                    return false;
+                }
+            }
+            return true;
+        })()
+        console.log(queryCheck)
+        console.log(to.params)
+        if(queryCheck) {
+            const holder = {}
+            to.params.params.forEach((el:string)=> {
+                const [name, number] = el.split('-')
+                if(holder[name]) {
+                    holder[`${name}[]`] = [holder[name],number]
+                    delete holder[name]
+                } else if (holder[`${name}[]`]) {
+                    holder[`${name}[]`].push(number)
+                } else {
+                    holder[name] = number
+                }
+            })
+            return {
+                name: 'catalogue',
+                query: holder
+            }
+        }
+    }
+})
 export default router;

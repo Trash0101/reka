@@ -177,7 +177,6 @@ const selectedSort = computed(()=> {
   } else {
     return [false, true]
   }
-
 })
 </script>
 

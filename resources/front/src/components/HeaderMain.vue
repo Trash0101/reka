@@ -52,7 +52,7 @@ const cartPrice = computed(() => {
                         <router-link
                             class="nav__drop-entry"
                             v-for="(value, key) in props.categories"
-                            :to="`/catalogue/categories/${key}`"
+                            :to="`/catalogue/category-${key+1}`"
                             >{{ value }}</router-link
                         >
                     </v-menu>

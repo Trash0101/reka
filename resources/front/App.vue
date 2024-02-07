@@ -17,6 +17,7 @@ cartStore.cartLocalStorageRestore();
 watch(route, () => {
     catalogueStore.initialSetup(route.query);
 });
+
 </script>
 
 <template>
