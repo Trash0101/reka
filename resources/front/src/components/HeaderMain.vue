@@ -44,6 +44,7 @@ const cartPrice = computed(() => {
                     <ph-caret-up v-else class="nav__caret"></ph-caret-up>
                     <v-menu
                         open-on-hover
+                        open-on-click
                         transition="slide-y-transition"
                         activator="parent"
                         location="bottom"
