@@ -123,34 +123,42 @@ const changeSort = (param: number) => {
         case 0: {
           const {"sortBy[]": sort,"orderBy[]": ord, ...parmas} = route.query
           router.replace({
-            ["orderBy[]"]: "desc",
-            ...parmas
+            query: {
+              ["orderBy[]"]: "desc",
+              ...parmas
+            }
           })
           break
         }
       case 1: {
         const {"sortBy[]": sort,"orderBy[]": ord, ...parmas} = route.query
         router.replace({
-          ["orderBy[]"]: "asc",
-          ...parmas
+          query: {
+            ["orderBy[]"]: "asc",
+            ...parmas
+          }
         })
         break
       }
       case 2: {
         const {"sortBy[]": sort,"orderBy[]": ord, ...parmas} = route.query
         router.replace({
-          ["sortBy[]"]: "price",
-          ["orderBy[]"]: "desc",
-          ...parmas
+          query: {
+            ["sortBy[]"]: "price",
+            ["orderBy[]"]: "desc",
+            ...parmas
+          }
         })
         break
       }
       case 3: {
         const {"sortBy[]": sort,"orderBy[]": ord, ...parmas} = route.query
         router.replace({
-          ["sortBy[]"]: "price",
-          ["orderBy[]"]: "asc",
-          ...parmas
+          query: {
+            ["sortBy[]"]: "price",
+            ["orderBy[]"]: "asc",
+            ...parmas
+          }
         })
         break
       }
