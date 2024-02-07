@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import {onMounted, ref} from "vue";
 import axios from "axios";
 
 import { useRouter } from "vue-router";
@@ -98,12 +98,17 @@ const registerOrAuth = async () => {
         });
     }
 };
+const dev = ref(false)
+onMounted(()=> {
+  dev.value = true
+})
 </script>
 
 <template>
     <div class="auth">
         <transition name="welcome">
             <div
+                v-if="dev"
                 class="auth__modal"
                 :class="{ 'auth__modal--long': registerStatus }"
             >
@@ -224,6 +229,8 @@ const registerOrAuth = async () => {
         z-index: 2;
     }
     &__modal {
+
+        mask-size: 100% 200%;
         display: flex;
         flex-direction: column;
         gap: 0.875rem;
@@ -292,4 +299,38 @@ const registerOrAuth = async () => {
         @include hover();
     }
 }
+@keyframes clip-fade {
+  0% {
+    mask-image: linear-gradient(to top, transparent,white);
+  }
+  100% {
+    mask-image: none;
+    mask-position: 100%;
+  }
+}
+.welcome-enter-from {
+  opacity: 0;
+  transform: translate(-50%, 0);
+}
+.welcome-enter-active {
+  animation: clip-fade .2s;
+  transition: all .3s ease-out;
+}
+.welcome-enter-to {
+  opacity: 1;
+  transform: translate(-50%, -50%);
+
+}
+.dropdown-leave-to {
+  transform: translateY(0);
+  opacity: 0;
+}
+.dropdown-leave-active {
+  transition: all 0.3s ease-out;
+}
+.dropdown-leave-from {
+  transform: translateY(0);
+  opacity: 1;
+}
+
 </style>
