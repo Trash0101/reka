@@ -45,11 +45,18 @@ router.beforeEach((to, from)=> {
             }
             return true;
         })()
-        console.log(queryCheck)
-        console.log(to.params)
-        if(queryCheck) {
+        const paramCheck = (function isEmpty() {
+            for (const prop in to.params) {
+                if (Object.hasOwn(to.params, prop)) {
+                    return false;
+                }
+            }
+            return true;
+        })()
+        console.log(queryCheck, paramCheck)
+        if(queryCheck && !paramCheck) {
             const holder = {}
-            to.params.params.forEach((el:string)=> {
+            to.params?.params.forEach((el:string)=> {
                 const [name, number] = el.split('-')
                 if(holder[name]) {
                     holder[`${name}[]`] = [holder[name],number]

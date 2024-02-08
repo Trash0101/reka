@@ -185,4 +185,60 @@ const showPagination = computed(() => {
         font-size: 1.5rem;
     }
 }
+@media (min-width: 2000px) {
+    .card {
+        height: 60rem;
+        &__image {
+            border-radius: 1.2rem;
+        }
+        &__image-content {
+            max-width: 100%;
+            object-fit: cover;
+        }
+        &__text-block {
+            padding: 1rem;
+            gap: 1.7rem;
+        }
+        &__price {
+            font-size: 2rem;
+            &--old {
+                margin-left: 1.2rem;
+            }
+        }
+        &__description {
+            font-size: 1.6rem;
+        }
+        &__button {
+            font-size: 1.6rem;
+            padding: 1.6rem 0;
+            border-radius: 1.2rem;
+        }
+        &__pagination {
+            left: 1.6rem;
+        }
+        &__sale-chip {
+            position: absolute;
+            top: 1.2rem;
+            right: 1.2rem;
+            border-radius: .5rem;
+            font-size: 1.6rem;
+        }
+    }
+    .active-button {
+        font-size: 3rem;
+        border-radius: 1.2rem;
+        &__plus {
+            font-size: 6rem;
+            border-radius: 1.2rem;
+        }
+        &__minus {
+            color: white;
+            font-size: 6rem;
+            border-radius: 1.2rem;
+        }
+        &__count {
+            font-size: 1.5rem;
+        }
+    }
+}
 </style>
